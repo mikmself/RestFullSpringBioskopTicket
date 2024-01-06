@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<header class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+    <div class="px-4">
+        <div class="flex items-center justify-between">
+            <div class="flex shrink-0">
+                <a class="flex items-center" href="/"><h1 class="font-bold">Bioskop</h1></a>
+            </div>
+            <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
+                <a href="/schedule" class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">Schedule</a>
+                <a href="/film" class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">Film</a>
+                <a href="/theater" class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">Theater</a>
+                <a href="/transaction" class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">Transaction</a>
+            </div>
+            <div class="flex items-center justify-end gap-3">
+                <a class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                   href="/booking">Booking</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="shadow-lg rounded-lg overflow-hidden" style="margin-top: 4cm;padding: .5cm">
+    <div class="flex justify-between">
+        <h1 class="font-bold">Transaction</h1>
+        <a href="/transaction/create" class="bg-blue-500 text-white py-1 px-2 rounded-full text-xs">Tambah</a>
+    </div>
+    <table class="w-full table-fixed" style="margin-top: .2cm">
+        <thead>
+        <tr class="bg-gray-100">
+            <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ID</th>
+            <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Booking ID</th>
+            <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Total Payment</th>
+            <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Payment Method</th>
+            <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase"></th>
+        </tr>
+        </thead>
+        <tbody class="bg-white" th:each="transaction : ${transactions}">
+        <tr>
+            <td class="py-4 px-6 border-b border-gray-200" th:text="${transaction.getId()}"></td>
+            <td class="py-4 px-6 border-b border-gray-200" th:text="${transaction.getBooking_id().getId()}"></td>
+            <td class="py-4 px-6 border-b border-gray-200" th:text="${transaction.getTotal_payment()}"></td>
+            <td class="py-4 px-6 border-b border-gray-200" th:text="${transaction.getPayment_method()}"></td>
+            <td class="py-4 px-6 border-b border-gray-200 space-x-2">
+                <a th:href="@{/transaction/edit/{id}(id=${transaction.getId()})}" class="bg-green-500 text-white py-1 px-2 rounded-full text-xs">Edit</a>
+                <form th:action="@{/transaction/delete/{id}(id=${transaction.getId()})}" method="post" class="inline">
+                    <button type="submit"
+                            class="bg-red-500 text-white py-1 px-2 rounded-full text-xs"
+                            onclick="return confirm('Are you sure you want to delete this transaction?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
